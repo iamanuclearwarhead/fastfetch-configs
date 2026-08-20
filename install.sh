@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 #
-# fastfetch-configs installer
 #
-# Usage:
-#   ./install.sh              interactive picker
-#   ./install.sh nordic       install a config by name
-#   ./install.sh -l           list available configs
-#   ./install.sh -p nordic    preview a config without installing
+#   __         _    __     _      _          _         _        _ _         
+#  / _|__ _ __| |_ / _|___| |_ __| |_       (_)_ _  __| |_ __ _| | |___ _ _ 
+# |  _/ _` (_-<  _|  _/ -_)  _/ _| ' \      | | ' \(_-<  _/ _` | | / -_) '_|
+# |_| \__,_/__/\__|_| \___|\__\__|_||_|     |_|_||_/__/\__\__,_|_|_\___|_|  
+#                                                                       
+# usage
+#   ./install.sh                                          interactive picker
+#   ./install.sh nordic                                   install a config by name
+#   ./install.sh -l                                       list available configs
+#   ./install.sh -p nordic                                preview a config without installing
 #
-# One-liner (no clone needed):
+# oneliner (no cloning):
 #   curl -fsSL https://raw.githubusercontent.com/iamanuclearwarhead/fastfetch-configs/main/install.sh | bash
-#
 set -euo pipefail
 
 REPO_URL="https://github.com/iamanuclearwarhead/fastfetch-configs.git"
@@ -34,7 +37,6 @@ usage() {
     exit 0
 }
 
-# ── locate the repo (clone it if we're running via curl | bash) ──────────────
 CLEANUP_DIR=""
 cleanup() { if [ -n "$CLEANUP_DIR" ]; then rm -rf "$CLEANUP_DIR"; fi; }
 trap cleanup EXIT
@@ -54,7 +56,6 @@ else
     REPO_DIR="$CLEANUP_DIR/repo"
 fi
 
-# ── discover configs ─────────────────────────────────────────────────────────
 configs=()
 for dir in "$REPO_DIR"/*/; do
     [ -f "$dir/config.jsonc" ] && configs+=("$(basename "$dir")")
@@ -65,7 +66,6 @@ list_configs() {
     printf '%s\n' "${BOLD}Available configs:${RESET}"
     local i=1
     for name in "${configs[@]}"; do
-        # first line comment inside the config doubles as its description
         desc="$(sed -n 's|^\s*// ||p' "$REPO_DIR/$name/config.jsonc" | head -1)"
         printf '  %s%2d%s  %s%-12s%s %s%s%s\n' \
             "$BLUE" "$i" "$RESET" "$BOLD" "$name" "$RESET" "$DIM" "$desc" "$RESET"
@@ -86,7 +86,6 @@ preview_config() {
     fastfetch --config "$REPO_DIR/$1/config.jsonc"
 }
 
-# ── parse arguments ──────────────────────────────────────────────────────────
 choice=""
 case "${1:-}" in
     -h|--help) usage ;;
@@ -105,7 +104,6 @@ case "${1:-}" in
         ;;
 esac
 
-# ── interactive picker ───────────────────────────────────────────────────────
 if [ -z "$choice" ]; then
     [ -t 0 ] || [ -e /dev/tty ] || die "no config given and no terminal to ask on (try: $0 <config>)"
     printf '\n'
@@ -134,7 +132,6 @@ if [ -z "$choice" ]; then
     done
 fi
 
-# ── back up any existing config, then install ────────────────────────────────
 if [ -e "$TARGET_DIR" ] && [ -n "$(ls -A "$TARGET_DIR" 2>/dev/null)" ]; then
     backup="$TARGET_DIR.bak.$(date +%Y%m%d-%H%M%S)"
     mv "$TARGET_DIR" "$backup"
@@ -149,5 +146,5 @@ if command -v fastfetch >/dev/null 2>&1; then
     printf '\n'
     fastfetch
 else
-    warn "fastfetch doesn't seem to be installed — install it and run: fastfetch"
+    warn "fastfetch doesnt seem to be installed, would you like to install it? [Y/n]"
 fi
