@@ -1,0 +1,78 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    // gruvbox — warm retro yellows and oranges, Nerd Font icons
+    "logo": {
+        "padding": {
+            "top": 1
+        }
+    },
+    "display": {
+        "separator": " \u001b[33m::\u001b[0m ",
+        "color": {
+            "keys": "33"
+        }
+    },
+    "modules": [
+        "break",
+        {
+            "type": "title",
+            "format": "\u001b[1;33m{user-name}\u001b[0m \u001b[90mis on\u001b[0m \u001b[1;31m{host-name}"
+        },
+        {
+            "type": "custom",
+            "format": "\u001b[33m▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂"
+        },
+        "break",
+        {
+            "type": "os",
+            "key": "  distro"
+        },
+        {
+            "type": "kernel",
+            "key": "  kernel"
+        },
+        {
+            "type": "packages",
+            "key": " 󰏖 pkgs"
+        },
+        {
+            "type": "shell",
+            "key": "  shell"
+        },
+        {
+            "type": "terminal",
+            "key": "  term"
+        },
+        {
+            "type": "wm",
+            "key": "  wm"
+        },
+        {
+            "type": "cpu",
+            "key": "  cpu"
+        },
+        {
+            "type": "gpu",
+            "key": " 󰢮 gpu"
+        },
+        {
+            "type": "memory",
+            "key": "  ram"
+        },
+        {
+            "type": "disk",
+            "key": " 󰋊 disk"
+        },
+        {
+            "type": "uptime",
+            "key": "  uptime"
+        },
+        "break",
+        {
+            "type": "colors",
+            "paddingLeft": 2,
+            "symbol": "circle"
+        },
+        "break"
+    ]
+}
