@@ -46,8 +46,12 @@ if [ -f "${BASH_SOURCE[0]:-}" ]; then
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 fi
 
-if [ -n "$script_dir" ] && [ -f "$script_dir/README.md" ] && ls "$script_dir"/*/config.jsonc >/dev/null 2>&1; then
+SHARE_DIR="/usr/share/fastfetch-configs"
+
+if [ -n "$script_dir" ] && ls "$script_dir"/*/config.jsonc >/dev/null 2>&1; then
     REPO_DIR="$script_dir"
+elif ls "$SHARE_DIR"/*/config.jsonc >/dev/null 2>&1; then
+    REPO_DIR="$SHARE_DIR"
 else
     command -v git >/dev/null 2>&1 || die "git is required for one-liner installs"
     info "Fetching fastfetch-configs..."
@@ -62,11 +66,22 @@ for dir in "$REPO_DIR"/*/; do
 done
 [ "${#configs[@]}" -gt 0 ] || die "no configs found in $REPO_DIR"
 
+declare -A DESCRIPTIONS=(
+    [minimal]="only the essentials, works in any terminal"
+    [server]="plain ascii for servers and ssh sessions"
+    [nordic]="cool nord blues in a rounded box (nerd font)"
+    [gruvbox]="warm retro yellows and oranges (nerd font)"
+    [catppuccin]="soft mauve and pink pastels (nerd font, truecolor)"
+    [tokyo-night]="neon purple and blue (nerd font, truecolor)"
+    [matrix]="all green nullsec aesthetic (nerd font)"
+    [verbose]="everything fastfetch knows, sorted (nerd font)"
+)
+
 list_configs() {
     printf '%s\n' "${BOLD}Available configs:${RESET}"
     local i=1
     for name in "${configs[@]}"; do
-        desc="$(sed -n 's|^\s*// desc: ||p' "$REPO_DIR/$name/config.jsonc" | head -1)"
+        desc="${DESCRIPTIONS[$name]:-}"
         printf '  %s%2d%s  %s%-12s%s %s%s%s\n' \
             "$BLUE" "$i" "$RESET" "$BOLD" "$name" "$RESET" "$DIM" "$desc" "$RESET"
         i=$((i + 1))
