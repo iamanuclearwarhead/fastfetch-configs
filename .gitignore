@@ -1,10 +1,4 @@
-# Ignore macOS system files
-.DS_Store
-
-# Ignore temporary/backup files
 *~
 *.bak
 *.swp
-
-# Ignore any local/custom testing configs if needed
 local_config.jsonc
