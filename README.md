@@ -91,5 +91,7 @@ to make sure all icons and images work correctly,
 
 ## license
 mit. [license](LICENSE) here
+
 made with <3 and shell
+
 dont be afraid to fork this
