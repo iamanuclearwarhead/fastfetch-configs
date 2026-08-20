@@ -4,7 +4,7 @@ a collection of custom aesthetic configurations for [fastfetch](https://github.c
 > this is **not** a fork of fastfetch
 
 ![demo](assets/demo.gif)
-> recorded with [vhs](https://github.com/charmbracelet/vhs), regenerate with `vhs demo.tape`
+> recorded with [vhs](https://github.com/charmbracelet/vhs)
 
 ## configs
 
