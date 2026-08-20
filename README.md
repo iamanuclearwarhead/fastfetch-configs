@@ -53,6 +53,12 @@ everything fastfetch knows about your machine sorted into **SYSTEM**, **DESKTOP*
 
 ## installation and usage
 
+### from the aur (arch btw)
+```bash
+yay -S fastfetch-configs-git
+```
+> then run `fastfetch-configs` to pick a config
+
 ### quick install (recommended)
 
 ```bash
