@@ -33,7 +33,7 @@ warn()  { printf '%s\n' "${YELLOW}::${RESET} $*"; }
 die()   { printf '%s\n' "${RED}error:${RESET} $*" >&2; exit 1; }
 
 usage() {
-    sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
+    sed -n '2,/^set -euo/p' "$0" | head -n -1 | sed 's/^# \{0,1\}//'
     exit 0
 }
 
@@ -66,7 +66,7 @@ list_configs() {
     printf '%s\n' "${BOLD}Available configs:${RESET}"
     local i=1
     for name in "${configs[@]}"; do
-        desc="$(sed -n 's|^\s*// ||p' "$REPO_DIR/$name/config.jsonc" | head -1)"
+        desc="$(sed -n 's|^\s*// desc: ||p' "$REPO_DIR/$name/config.jsonc" | head -1)"
         printf '  %s%2d%s  %s%-12s%s %s%s%s\n' \
             "$BLUE" "$i" "$RESET" "$BOLD" "$name" "$RESET" "$DIM" "$desc" "$RESET"
         i=$((i + 1))
@@ -142,9 +142,34 @@ mkdir -p "$TARGET_DIR"
 cp -r "$REPO_DIR/$choice/." "$TARGET_DIR/"
 ok "Installed ${BOLD}$choice${RESET} to ${BOLD}$TARGET_DIR${RESET}"
 
-if command -v fastfetch >/dev/null 2>&1; then
-    printf '\n'
-    fastfetch
-else
-    warn "fastfetch doesnt seem to be installed, would you like to install it? [Y/n]"
+install_fastfetch() {
+    if   command -v pacman  >/dev/null 2>&1; then sudo pacman -S --needed fastfetch
+    elif command -v apt     >/dev/null 2>&1; then sudo apt install -y fastfetch
+    elif command -v dnf     >/dev/null 2>&1; then sudo dnf install -y fastfetch
+    elif command -v zypper  >/dev/null 2>&1; then sudo zypper install -y fastfetch
+    elif command -v xbps-install >/dev/null 2>&1; then sudo xbps-install -y fastfetch
+    elif command -v apk     >/dev/null 2>&1; then sudo apk add fastfetch
+    elif command -v brew    >/dev/null 2>&1; then brew install fastfetch
+    else
+        warn "couldn't detect your package manager, install fastfetch manually:"
+        warn "  https://github.com/fastfetch-cli/fastfetch#installation"
+        return 1
+    fi
+}
+
+if ! command -v fastfetch >/dev/null 2>&1; then
+    if [ -t 0 ] || [ -e /dev/tty ]; then
+        printf '%s' "${YELLOW}::${RESET} fastfetch doesnt seem to be installed, would you like to install it? [Y/n] "
+        read -r answer < /dev/tty || answer="n"
+        case "$answer" in
+            n|N|no|NO) warn "skipped, install it later and run: fastfetch"; exit 0 ;;
+            *) install_fastfetch || exit 1 ;;
+        esac
+    else
+        warn "fastfetch doesnt seem to be installed, install it and run: fastfetch"
+        exit 0
+    fi
 fi
+
+printf '\n'
+fastfetch

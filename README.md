@@ -3,6 +3,9 @@
 a collection of custom aesthetic configurations for [fastfetch](https://github.com/fastfetch-cli/fastfetch).
 > this is **not** a fork of fastfetch
 
+![demo](assets/demo.gif)
+> recorded with [vhs](https://github.com/charmbracelet/vhs), regenerate with `vhs demo.tape`
+
 ## configs
 
 ### 1. minimal
