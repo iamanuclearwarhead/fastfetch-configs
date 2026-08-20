@@ -7,10 +7,12 @@ a collection of custom aesthetic configurations for [fastfetch](https://github.c
 
 ### 1. minimal
 a small distractionless layout, only the essentials with a small logo, works literally in any terminal
+> **requires: nothing**
 
 ### 2. server
 plain ascii layout made for servers and ssh sessions
 os, kernel, uptime, ip, cpu, memory, swap, disk, and process count
+> **requires: nothing**
 
 ### 3. nordic
 a cool nord inspired config with rounded box frames (`╭─╮ … ╰─╯`)
