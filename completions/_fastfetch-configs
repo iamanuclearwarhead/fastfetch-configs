@@ -1,0 +1,19 @@
+#compdef fastfetch-configs
+# zsh completion for fastfetch-configs
+
+_fastfetch_configs() {
+    local share_dir=/usr/share/fastfetch-configs
+    local -a configs
+    if [[ -d $share_dir ]]; then
+        configs=($share_dir/*/config.jsonc(N:h:t))
+    fi
+    (( ${#configs} )) || configs=(minimal server nordic gruvbox catppuccin tokyo-night matrix verbose)
+
+    _arguments \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-l --list)'{-l,--list}'[list available configs]' \
+        '(-p --preview)'{-p,--preview}'[preview a config without installing]:config:(${configs[@]})' \
+        '1:config:(${configs[@]})'
+}
+
+_fastfetch_configs "$@"
