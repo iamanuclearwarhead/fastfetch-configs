@@ -1,4 +1,3 @@
-# vhs demo tape — regenerate with: vhs demo.tape
 # https://github.com/charmbracelet/vhs
 
 Output assets/demo.gif
